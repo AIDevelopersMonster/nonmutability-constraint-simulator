@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Runtime outputs
+runs/*
+!runs/.gitkeep
+output/*
+!output/.gitkeep
+
+# Local/editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
