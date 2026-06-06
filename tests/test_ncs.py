@@ -109,3 +109,24 @@ def test_fixed_seed_reproducibility(tmp_path: Path) -> None:
     rows1 = _run_to(tmp_path, "run1")
     rows2 = _run_to(tmp_path, "run2")
     assert rows1 == rows2
+
+def test_hybrid_controlled_override_is_not_proxy_exploitation(tmp_path: Path) -> None:
+    rows = _run_to(tmp_path, "controlled_override")
+
+    hybrid_override_rows = [
+        r
+        for r in rows
+        if r["agent_type"] == "hybrid" and int(r["override_count"]) > 0
+    ]
+    assert hybrid_override_rows
+    assert all(int(r["controlled_override_indicator"]) == 1 for r in hybrid_override_rows)
+    assert all(int(r["proxy_exploitation_indicator"]) == 0 for r in hybrid_override_rows)
+
+    scalar_override_rows = [
+        r
+        for r in rows
+        if r["agent_type"] == "scalar" and int(r["override_count"]) > 0
+    ]
+    assert scalar_override_rows
+    assert any(int(r["controlled_override_indicator"]) == 0 for r in scalar_override_rows)
+    assert any(int(r["proxy_exploitation_indicator"]) == 1 for r in scalar_override_rows)
